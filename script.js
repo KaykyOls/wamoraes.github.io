@@ -1,11 +1,3 @@
-// ============================================
-//  W.A Moraes Peças e Acessórios Automotivos
-//  Arquivo: js/script.js
-//  Aluno: 1º Trimestre - Desenvolvimento Front-End
-//  Funcionalidade: Validação do formulário de contato
-// ============================================
-
-
 // Aguarda o carregamento completo da página antes de executar o código
 document.addEventListener("DOMContentLoaded", function () {
 
