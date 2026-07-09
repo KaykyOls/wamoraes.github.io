@@ -1,74 +1,105 @@
 // Aguarda o carregamento completo da página antes de executar o código
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Seleciona o formulário pelo elemento form da página
-    var formulario = document.querySelector("form");
 
-    // Adiciona o evento de submit ao formulário
+    // ============================================
+    //  MÁSCARA DO TELEFONE
+    // ============================================
+
+    var campoTelefone = document.getElementById("telefone");
+
+    campoTelefone.addEventListener("input", function () {
+
+        // Remove tudo que não for número
+        var valor = campoTelefone.value.replace(/\D/g, "");
+
+        // Limita a 11 dígitos no máximo
+        valor = valor.substring(0, 11);
+
+        // Aplica a máscara conforme a quantidade de dígitos digitados
+        if (valor.length > 10) {
+            // Celular: (XX) XXXXX-XXXX
+            valor = valor.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+        } else {
+            // Fixo: (XX) XXXX-XXXX
+            valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+        }
+
+        campoTelefone.value = valor;
+
+    });
+
+
+    // ============================================
+    //  VALIDAÇÃO DO FORMULÁRIO NO ENVIO
+    // ============================================
+
+    // Seleciona o formulário pelo id
+    var formulario = document.getElementById("formContato");
+
     formulario.addEventListener("submit", function (evento) {
 
         // Impede o envio padrão do formulário enquanto validamos os campos
         evento.preventDefault();
 
-        // Pega os valores digitados em cada campo
-        var nome      = document.getElementById("nome").value;
-        var email     = document.getElementById("email").value;
-        var telefone  = document.getElementById("telefone").value;
-        var mensagem  = document.getElementById("mensagem").value;
+        // Pega os valores digitados em cada campo (trim remove espaços nas pontas)
+        var nome     = document.getElementById("nome").value.trim();
+        var email    = document.getElementById("email").value.trim();
+        var telefone = document.getElementById("telefone").value.trim();
+        var mensagem = document.getElementById("mensagem").value.trim();
+
 
         // ---- Validação do Nome ----
+
         if (nome === "") {
             alert("Por favor, preencha o campo Nome.");
             document.getElementById("nome").focus();
             return;
         }
 
-        // ---- Validação do E-mail ----
-        if (email === "") {
-            alert("Por favor, preencha o campo E-mail.");
-            document.getElementById("email").focus();
+        if (nome.length < 3) {
+            alert("O nome deve ter pelo menos 3 letras.");
+            document.getElementById("nome").focus();
             return;
         }
 
-        // Verifica se o e-mail contém "@" e "." — validação básica de formato
-        if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+
+        // ---- Validação do E-mail ----
+        // A regex verifica o formato: qualquer coisa @ qualquer coisa . qualquer coisa
+        var emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailValido.test(email)) {
             alert("Por favor, informe um e-mail válido (exemplo: nome@email.com).");
             document.getElementById("email").focus();
             return;
         }
 
+
         // ---- Validação do Telefone ----
-        if (telefone === "") {
-            alert("Por favor, preencha o campo Telefone.");
+        // A regex verifica se o formato da máscara foi aplicado corretamente
+        var telefoneValido = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/;
+
+        if (!telefoneValido.test(telefone)) {
+            alert("Telefone inválido. Exemplo: (11) 99999-9999");
             document.getElementById("telefone").focus();
             return;
         }
 
-        // Remove tudo que não for número para contar os dígitos
-        var apenasNumeros = telefone.replace(/\D/g, "");
-
-        // Um telefone válido deve ter pelo menos 10 dígitos (DDD + número)
-        if (apenasNumeros.length < 10) {
-            alert("Por favor, informe um telefone válido com DDD (mínimo 10 dígitos).");
-            document.getElementById("telefone").focus();
-            return;
-        }
 
         // ---- Validação da Mensagem ----
-        if (mensagem === "") {
-            alert("Por favor, escreva uma mensagem antes de enviar.");
+
+        if (mensagem.length < 10) {
+            alert("A mensagem deve ter pelo menos 10 caracteres.");
             document.getElementById("mensagem").focus();
             return;
         }
 
+
         // ---- Todos os campos estão corretos ----
         alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
 
-        // Limpa todos os campos do formulário após o envio bem-sucedido
-        document.getElementById("nome").value     = "";
-        document.getElementById("email").value    = "";
-        document.getElementById("telefone").value = "";
-        document.getElementById("mensagem").value = "";
+        // Limpa todos os campos de uma vez usando o método reset do formulário
+        formulario.reset();
 
     });
 
