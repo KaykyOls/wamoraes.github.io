@@ -1,9 +1,3 @@
-/* ============================================
-   W.A Moraes Peças e Acessórios Automotivos
-   Arquivo: css/style.css
-   Aluno: 1º Trimestre - Desenvolvimento Front-End
-   ============================================ */
-
 /* Reset básico */
 * {
     margin: 0;
@@ -327,7 +321,7 @@ main {
 }
 
 /* ============================================
-   PÁGINA PRODUTOS (PHP)
+   PÁGINA PRODUTOS
    ============================================ */
 
 .produtos-grid {
