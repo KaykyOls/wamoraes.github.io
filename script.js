@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var formulario = document.getElementById("formContato");
 
     formulario.addEventListener("submit", function (evento) {
+    alert("Entrou no submit!");
+    evento.preventDefault();
 
         // Impede o envio padrão do formulário enquanto validamos os campos
         evento.preventDefault();
